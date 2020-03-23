@@ -1,0 +1,6 @@
+exp/*
+pretrained/*
+outdir/*
+outputs/*
+trans.py
+gen_test.py
