@@ -1,22 +1,15 @@
-# PyTorch Semantic Segmentation
+# Strip Pooling: Rethinking Spatial Pooling for Scene Parsing
 
 ### Introduction
 
-This repository is a PyTorch implementation for semantic segmentation / scene parsing. The code is easy to use for training and testing on various datasets. The codebase mainly uses ResNet50/101/152 as backbone and can be easily adapted to other basic classification structures. Implemented networks including [PSPNet](https://hszhao.github.io/projects/pspnet) and [PSANet](https://hszhao.github.io/projects/psanet), which ranked 1st places in [ImageNet Scene Parsing Challenge 2016 @ECCV16](http://image-net.org/challenges/LSVRC/2016/results), [LSUN Semantic Segmentation Challenge 2017 @CVPR17](https://blog.mapillary.com/product/2017/06/13/lsun-challenge.html) and [WAD Drivable Area Segmentation Challenge 2018 @CVPR18](https://bdd-data.berkeley.edu/wad-2018.html). Sample experimented datasets are [ADE20K](http://sceneparsing.csail.mit.edu), [PASCAL VOC 2012](http://host.robots.ox.ac.uk:8080/leaderboard/displaylb.php?challengeid=11&compid=6) and [Cityscapes](https://www.cityscapes-dataset.com).
+This repository is a PyTorch implementation for our CVPR2020 paper. Our implementation is based on the [code](https://github.com/hszhao/semseg) provided by Zhao Hengshuang. If you use the code, please cite their [paper] (https://hszhao.github.io/projects/pspnet). Detailed usage can also be found [here](https://github.com/hszhao/semseg).
 
-<img src="./figure/pspnet.png" width="900"/>
 
 ### Usage
 
-1. Highlight:
+1. Requirement:
 
-   - Both multithreading training ([nn.DataParallel](https://pytorch.org/docs/stable/nn.html#dataparallel)) and multiprocessing training ([nn.parallel.DistributedDataParallel](https://pytorch.org/docs/stable/_modules/torch/nn/parallel/distributed.html)) (**recommended**) are supported. And the later one is much faster.
-   - Better reimplementation results with well designed code structures.
-   - All initialization models, trained models and predictions are [available](https://drive.google.com/open?id=15wx9vOM0euyizq-M1uINgN0_wjVRf9J3).
-
-2. Requirement:
-
-   - Hardware: 4-8 GPUs (better with >=11G GPU memory)
+   - Hardware: 4 GPUs (better with >=12G GPU memory)
    - Software: PyTorch>=1.0.0, Python3, [tensorboardX](https://github.com/lanpa/tensorboardX), [apex](https://github.com/NVIDIA/apex)
 
 3. Clone the repository:
@@ -44,27 +37,6 @@ This repository is a PyTorch implementation for semantic segmentation / scene pa
      ```shell
      sh tool/test.sh ade20k pspnet50
      ```
-
-   - **Quick demo** on one image:
-
-     ```shell
-     PYTHONPATH=./ python tool/demo.py --config=config/ade20k/ade20k_pspnet50.yaml --image=figure/demo/ADE_val_00001515.jpg TEST.scales '[1.0]'
-     ```
-
-6. Visualization: [tensorboardX](https://github.com/lanpa/tensorboardX) incorporated for better visualization.
-
-   ```shell
-   tensorboard --logdir=run1:$EXP1,run2:$EXP2 --port=6789
-   ```
-
-7. Other:
-
-   - Resources: GoogleDrive [LINK](https://drive.google.com/open?id=15wx9vOM0euyizq-M1uINgN0_wjVRf9J3) contains shared models, visual predictions and data lists.
-   - Models: ImageNet pre-trained models and trained segmentation models can be accessed. Note that our ImageNet pretrained models are slightly different from original [ResNet](https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py) implementation in the beginning part.
-   - Predictions: Visual predictions of several models can be accessed.
-   - Datasets: attributes (`names` and `colors`) are in folder `dataset` and some sample lists can be accessed.
-   - Some FAQs: [FAQ.md](./FAQ.md).
-   - Former video predictions: high accuracy -- [PSPNet](https://youtu.be/rB1BmBOkKTw), [PSANet](https://youtu.be/l5xu1DI6pDk); high efficiency -- [ICNet](https://youtu.be/qWl9idsCuLQ).
 
 ### Performance
 
@@ -114,29 +86,19 @@ Description: **mIoU/mAcc/aAcc** stands for mean IoU, mean accuracy of each class
 
 ### Citation
 
-If you find the code or trained models useful, please consider citing:
+You may want to cite:
 
 ```
+@inproceedings{hou2020strip,
+  title={{Strip Pooling}: Rethinking Spatial Pooling for Scene Parsing},
+  author={Hou, Qibin and Zhang, Li and Cheng, Ming-Ming and Feng, Jiashi},
+  booktitle={CVPR},
+  year={2020}
+}
 @misc{semseg2019,
   author={Zhao, Hengshuang},
   title={semseg},
   howpublished={\url{https://github.com/hszhao/semseg}},
   year={2019}
 }
-@inproceedings{zhao2017pspnet,
-  title={Pyramid Scene Parsing Network},
-  author={Zhao, Hengshuang and Shi, Jianping and Qi, Xiaojuan and Wang, Xiaogang and Jia, Jiaya},
-  booktitle={CVPR},
-  year={2017}
-}
-@inproceedings{zhao2018psanet,
-  title={{PSANet}: Point-wise Spatial Attention Network for Scene Parsing},
-  author={Zhao, Hengshuang and Zhang, Yi and Liu, Shu and Shi, Jianping and Loy, Chen Change and Lin, Dahua and Jia, Jiaya},
-  booktitle={ECCV},
-  year={2018}
-}
 ```
-
-### Question
-
-Some [FAQ.md](./FAQ.md) collected. You are welcome to send pull requests or give some advices. Contact information: `hengshuangzhao at gmail.com`.
