@@ -1,11 +1,12 @@
 DATA:
-  data_root: /home/houqibin/.encoding/data/ADEChallengeData2016
-  train_list: /home/houqibin/.encoding/data/ADEChallengeData2016/train.txt
-  val_list: /home/houqibin/.encoding/data/ADEChallengeData2016/val.txt
+  data_root: /Data/ADEChallengeData2016  # data path
+  train_list: ~/data/ADE20K/train.txt
+  val_list: ~/data/ADE20K/val.txt
   classes: 150
 
 TRAIN:
   arch: spnet
+  spm_on: True
   layers: 50
   backbone: resnet50
   sync_bn: True  # adopt sync_bn or not
@@ -18,9 +19,9 @@ TRAIN:
   zoom_factor: 8  # zoom factor for final prediction during training, be in [1, 2, 4, 8]
   ignore_label: 255
   aux_weight: 0.4
-  train_gpu: [1, 2, 3]
+  train_gpu: [0, 1, 2, 3]
   workers: 16  # data loader workers
-  batch_size: 12  # batch size for training
+  batch_size: 16  # batch size for training
   batch_size_val: 8  # batch size for validation during training, memory and speed tradeoff
   base_lr: 0.01
   epochs: 120
@@ -47,7 +48,7 @@ Distributed:
   loss_scale:
 
 TEST:
-  test_list: /mnt/lustre/zhaohengshuang/dataset/ade20k/list/validation.txt
+  test_list: ~/data/ADE20K/val.txt
   split: val  # split in [train, val and test]
   base_size: 512  # based size for scaling
   test_h: 480
@@ -57,7 +58,7 @@ TEST:
   index_start: 0  # evaluation start index in list
   index_step: 0  # evaluation step index in list, 0 means to end
   test_gpu: [0]
-  model_path: exp/ade20k/pspnet50/model/train_epoch_100.pth  # evaluation model path
-  save_folder: exp/ade20k/pspnet50/result/epoch_100/val/ss  # results save folder
+  model_path: exp/ade20k/spnet50/model/train_epoch_120.pth  # evaluation model path
+  save_folder: exp/ade20k/spnet50/result/epoch_120/val/ss  # results save folder
   colors_path: dataset/ade20k/ade20k_colors.txt  # path of dataset colors
   names_path: dataset/ade20k/ade20k_names.txt  # path of dataset category names

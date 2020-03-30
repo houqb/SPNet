@@ -118,6 +118,9 @@ def main():
         if args.arch == 'spnet':
             from models.spnet import SPNet
             model = SPNet(nclass=args.classes, backbone=args.backbone, pretrained=None)
+        elif args.arch == 'htnet':
+            from models.htnet import HTNet
+            model = HTNet(nclass=args.classes, backbone=args.backbone, pretrained=None)
         logger.info(model)
         model = torch.nn.DataParallel(model).cuda()
         cudnn.benchmark = True
@@ -228,7 +231,7 @@ def test(test_loader, test_data, model, classes, mean, std, base_size, crop_h, c
         check_makedirs(gray_folder)
         check_makedirs(color_folder)
         gray = np.uint8(prediction)
-        gray = class_index[gray]
+        #gray = class_index[gray]
         color = colorize(gray, colors)
         image_path, _ = data_list[i]
         image_name = image_path.split('/')[-1].split('.')[0]

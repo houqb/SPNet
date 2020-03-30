@@ -28,8 +28,8 @@ cv2.setNumThreads(0)
 
 def get_parser():
     parser = argparse.ArgumentParser(description='PyTorch Semantic Segmentation')
-    parser.add_argument('--config', type=str, default='config/ade20k/ade20k_pspnet50.yaml', help='config file')
-    parser.add_argument('opts', help='see config/ade20k/ade20k_pspnet50.yaml for all options', default=None, nargs=argparse.REMAINDER)
+    parser.add_argument('--config', type=str, default='config/ade20k/ade20k_spnet50.yaml', help='config file')
+    parser.add_argument('opts', help='see config/ade20k/ade20k_spnet50.yaml for all options', default=None, nargs=argparse.REMAINDER)
     args = parser.parse_args()
     assert args.config is not None
     cfg = config.load_cfg_from_cfg_file(args.config)
@@ -101,14 +101,17 @@ def main_worker(gpu, ngpus_per_node, argss):
             args.rank = args.rank * ngpus_per_node + gpu
         dist.init_process_group(backend=args.dist_backend, init_method=args.dist_url, world_size=args.world_size, rank=args.rank)
 
-    #criterion = nn.CrossEntropyLoss(ignore_index=args.ignore_label)
-    criterion = OhemCrossEntropyLoss(ignore_index=args.ignore_label)
+    criterion = nn.CrossEntropyLoss(ignore_index=args.ignore_label)
+    #criterion = OhemCrossEntropyLoss(ignore_index=args.ignore_label)
     if args.arch == 'spnet':
         from models.spnet import SPNet
-        model = SPNet(nclass=args.classes, backbone=args.backbone, pretrained=args.weight, criterion=criterion, norm_layer=BatchNorm)
+        model = SPNet(nclass=args.classes, backbone=args.backbone, pretrained=args.weight, criterion=criterion, norm_layer=BatchNorm, spm_on=args.spm_on)
         print(model)
         modules_ori = [model.pretrained]
         modules_new = [model.head, model.auxlayer]
+    else:
+        if main_process():
+            logger.info("=> Unknown network architecture: '{}'".format(args.arch))
     params_list = []
     for module in modules_ori:
         params_list.append(dict(params=module.parameters(), lr=args.base_lr))
@@ -200,7 +203,7 @@ def main_worker(gpu, ngpus_per_node, argss):
             transform.Crop([args.train_h, args.train_w], crop_type='center', padding=mean, ignore_label=args.ignore_label),
             transform.ToTensor(),
             transform.Normalize(mean=mean, std=std)])
-        val_data = dataset.SemData(split='val', data_root=args.data_root, data_list=args.val_list, transform=val_transform)
+        val_data = dataset.CityscapesData(split='val', data_root=args.data_root, data_list=args.val_list, transform=val_transform)
         if args.distributed:
             val_sampler = torch.utils.data.distributed.DistributedSampler(val_data)
         else:

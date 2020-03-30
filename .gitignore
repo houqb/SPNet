@@ -3,4 +3,7 @@ pretrained/*
 outdir/*
 outputs/*
 trans.py
-gen_test.py
+gen_test.sh
+config/cityscapes/cityscapes_htnet101.yaml
+models/__pycache__/*
+models/htnet.py

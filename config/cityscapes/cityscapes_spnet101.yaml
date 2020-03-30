@@ -1,11 +1,12 @@
 DATA:
   data_root: /home/e0357894/houqibin/data/Cityscapes/
-  train_list: /home/e0357894/houqibin/data/Cityscapes/list/trainval.lst
+  train_list: /home/e0357894/houqibin/data/Cityscapes/list/train.lst
   val_list: /home/e0357894/houqibin/data/Cityscapes/list/val.lst
   classes: 19
 
 TRAIN:
   arch: spnet
+  spm_on: True
   backbone: resnet101
   dataset: cityscapes
   layers: 101
@@ -14,8 +15,8 @@ TRAIN:
   train_w: 768
   scale_min: 0.5  # minimum random scale
   scale_max: 1.75  # maximum random scale
-  rotate_min: 0  # minimum random rotate
-  rotate_max: 0  # maximum random rotate
+  rotate_min: -5  # minimum random rotate
+  rotate_max: 5  # maximum random rotate
   zoom_factor: 8  # zoom factor for final prediction during training, be in [1, 2, 4, 8]
   ignore_label: 255
   aux_weight: 0.4
@@ -29,7 +30,7 @@ TRAIN:
   power: 0.9
   momentum: 0.9
   weight_decay: 0.0001
-  manual_seed: 1324
+  manual_seed:
   print_freq: 20
   save_freq: 1
   save_path: exp/cityscapes/spnet101/model
@@ -48,7 +49,6 @@ Distributed:
   loss_scale:
 
 TEST:
-  #test_list: /mnt/lustre/zhaohengshuang/dataset/cityscapes/list/fine_val.txt
   test_list: /home/e0357894/houqibin/data/Cityscapes/list/test.lst
   split: test  # split in [train, val and test]
   base_size: 2048  # based size for scaling
@@ -59,7 +59,7 @@ TEST:
   index_start: 0  # evaluation start index in list
   index_step: 0  # evaluation step index in list, 0 means to end
   test_gpu: [0]
-  model_path: exp/cityscapes/spnet101/model/train_epoch_199.pth  # evaluation model path
-  save_folder: exp/cityscapes/spnet101/result/epoch_199/test/ss  # results save folder
+  model_path: exp/cityscapes/spnet101/model/train_epoch_80.pth  # evaluation model path
+  save_folder: exp/cityscapes/spnet101/result/epoch_80/test/ss  # results save folder
   colors_path: dataset/cityscapes/cityscapes_colors.txt  # path of dataset colors
   names_path: dataset/cityscapes/cityscapes_names.txt  # path of dataset category names

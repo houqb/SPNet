@@ -1,17 +1,12 @@
 """Dilated ResNet"""
+
 import math
 import torch
 import torch.utils.model_zoo as model_zoo
 import torch.nn as nn
 import torch.nn.functional as F
 
-__all__ = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101',
-           'resnet152', 'BasicBlock', 'Bottleneck']
-
-model_urls = {
-    'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
-    'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
-}
+__all__ = ['ResNet', 'resnet50', 'resnet101', 'BasicBlock', 'Bottleneck']
 
 
 def conv3x3(in_planes, out_planes, stride=1):
@@ -73,14 +68,14 @@ class SPBlock(nn.Module):
         x1 = self.pool1(x)
         x1 = self.conv1(x1)
         x1 = self.bn1(x1)
-        #x1 = x1.expand(-1, -1, h, w)
-        x1 = F.interpolate(x1, (h, w))
+        x1 = x1.expand(-1, -1, h, w)
+        #x1 = F.interpolate(x1, (h, w))
 
         x2 = self.pool2(x)
         x2 = self.conv2(x2)
         x2 = self.bn2(x2)
-        #x2 = x2.expand(-1, -1, h, w)
-        x2 = F.interpolate(x2, (h, w))
+        x2 = x2.expand(-1, -1, h, w)
+        #x2 = F.interpolate(x2, (h, w))
 
         x = self.relu(x1 + x2)
         x = self.conv3(x).sigmoid()
@@ -94,7 +89,7 @@ class Bottleneck(nn.Module):
     # pylint: disable=unused-argument
     expansion = 4
     def __init__(self, inplanes, planes, stride=1, dilation=1,
-                 downsample=None, previous_dilation=1, norm_layer=None, dual_se_on=False):
+                 downsample=None, previous_dilation=1, norm_layer=None, spm_on=False):
         super(Bottleneck, self).__init__()
         self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=1, bias=False)
         self.bn1 = norm_layer(planes)
@@ -110,12 +105,8 @@ class Bottleneck(nn.Module):
         self.dilation = dilation
         self.stride = stride
 
-        self.dual_se_on = dual_se_on
-        if planes == 512:
-            self.dual_se_on = True
-
-        if self.dual_se_on:
-            self.dual_se = SPBlock(planes, planes, norm_layer=norm_layer)
+        if self.spm_on:
+            self.spm = SPBlock(planes, planes, norm_layer=norm_layer)
 
     def _sum_each(self, x, y):
         assert(len(x) == len(y))
@@ -135,8 +126,8 @@ class Bottleneck(nn.Module):
         out = self.bn2(out)
         out = self.relu(out)
 
-        if self.dual_se_on:
-            out = out * self.dual_se(out)
+        if self.spm_on:
+            out = out * self.spm(out)
 
         out = self.conv3(out)
         out = self.bn3(out)
@@ -176,9 +167,11 @@ class ResNet(nn.Module):
     """
     # pylint: disable=unused-variable
     def __init__(self, block, layers, num_classes=1000, dilated=False, multi_grid=False,
-                 deep_base=True, norm_layer=nn.BatchNorm2d):
+                 deep_base=True, norm_layer=nn.BatchNorm2d, spm_on=False):
         self.inplanes = 128 if deep_base else 64
         super(ResNet, self).__init__()
+
+        self.spm_on = spm_on
         if deep_base:
             self.conv1 = nn.Sequential(
                 nn.Conv2d(3, 64, kernel_size=3, stride=2, padding=1, bias=False),
@@ -212,8 +205,6 @@ class ResNet(nn.Module):
                                            norm_layer=norm_layer)
             self.layer4 = self._make_layer(block, 512, layers[3], stride=2,
                                            norm_layer=norm_layer)
-        #self.avgpool = GlobalAvgPool2d()
-        #self.fc = nn.Linear(512 * block.expansion, num_classes)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -225,38 +216,41 @@ class ResNet(nn.Module):
 
     def _make_layer(self, block, planes, blocks, stride=1, dilation=1, norm_layer=None, multi_grid=False):
         downsample = None
-        dual_se_on = False
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
                 nn.Conv2d(self.inplanes, planes * block.expansion,
                           kernel_size=1, stride=stride, bias=False),
                 norm_layer(planes * block.expansion),
             )
+        
+        spm_on = False
+        if planes == 512:
+            spm_on = self.spm_on
 
         layers = []
         multi_dilations = [4, 8, 16]
         if multi_grid:
             layers.append(block(self.inplanes, planes, stride, dilation=multi_dilations[0],
-                                downsample=downsample, previous_dilation=dilation, norm_layer=norm_layer))
+                                downsample=downsample, previous_dilation=dilation, norm_layer=norm_layer, spm_on=spm_on))
         elif dilation == 1 or dilation == 2:
             layers.append(block(self.inplanes, planes, stride, dilation=1,
-                                downsample=downsample, previous_dilation=dilation, norm_layer=norm_layer))
+                                downsample=downsample, previous_dilation=dilation, norm_layer=norm_layer, spm_on=spm_on))
         elif dilation == 4:
-            layers.append(block(self.inplanes, planes, stride, dilation=2,
-                                downsample=downsample, previous_dilation=dilation, norm_layer=norm_layer))
+            layers.append(block(self.inplanes, planes, stride, dilation=4,
+                                downsample=downsample, previous_dilation=dilation, norm_layer=norm_layer, spm_on=spm_on))
         else:
             raise RuntimeError("=> unknown dilation size: {}".format(dilation))
 
         self.inplanes = planes * block.expansion
         for i in range(1, blocks):
-            if i >= blocks - 1:
-                dual_se_on = True
+            if i >= blocks - 1 or planes == 512:
+                spm_on = self.spm_on
             if multi_grid:
                 layers.append(block(self.inplanes, planes, dilation=multi_dilations[i],
-                                    previous_dilation=dilation, norm_layer=norm_layer, dual_se_on=dual_se_on))
+                                    previous_dilation=dilation, norm_layer=norm_layer, spm_on=spm_on))
             else:
                 layers.append(block(self.inplanes, planes, dilation=dilation, previous_dilation=dilation,
-                                    norm_layer=norm_layer, dual_se_on=dual_se_on))
+                                    norm_layer=norm_layer, spm_on=spm_on))
 
         return nn.Sequential(*layers)
 
@@ -270,11 +264,6 @@ class ResNet(nn.Module):
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-
-        
-        #x = self.avgpool(x)
-        #x = x.view(x.size(0), -1)
-        #x = self.fc(x)
 
         return x
 

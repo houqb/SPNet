@@ -1,11 +1,12 @@
 DATA:
-  data_root: /home/e0357894/.encoding/data/ADEChallengeData2016
-  train_list: /home/e0357894/.encoding/data/ADEChallengeData2016/train.txt
-  val_list: /home/e0357894/.encoding/data/ADEChallengeData2016/val.txt
+  data_root: /Data/ADEChallengeData2016  # data path
+  train_list: ~/data/ADE20K/train.txt
+  val_list: ~/data/ADE20K/val.txt
   classes: 150
 
 TRAIN:
   arch: spnet
+  spm_on: True
   layers: 101
   dataset: ade20k
   backbone: resnet101
@@ -48,13 +49,12 @@ Distributed:
   loss_scale:
 
 TEST:
-    #test_list: /mnt/lustre/zhaohengshuang/dataset/ade20k/list/validation.txt
-  test_list: /home/e0357894/.encoding/data/ADEChallengeData2016/val.txt
+  test_list: ~/data/ADE20K/val.txt
   split: val  # split in [train, val and test]
   base_size: 512  # based size for scaling
   test_h: 480
   test_w: 480
-  scales: [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]  # evaluation scales, ms as [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
+  scales: [1.0]  # evaluation scales, ms as [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
   has_prediction: False  # has prediction already or not
   index_start: 0  # evaluation start index in list
   index_step: 0  # evaluation step index in list, 0 means to end
