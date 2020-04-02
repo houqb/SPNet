@@ -2,7 +2,7 @@
 
 ### Introduction
 
-This repository is a PyTorch implementation for our CVPR2020 paper.
+This repository is a PyTorch implementation for our [CVPR2020 paper](https://arxiv.org/pdf/2003.13328.pdf).
 
 ### Citation
 
