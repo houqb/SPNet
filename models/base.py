@@ -22,9 +22,7 @@ up_kwargs = {'mode': 'bilinear', 'align_corners': True}
 __all__ = ['BaseNet', 'MultiEvalModule']
 
 class BaseNet(nn.Module):
-    def __init__(self, nclass, backbone, aux, pretrained, dilated=True, norm_layer=None,
-                 base_size=520, crop_size=480, mean=[.485, .456, .406],
-                 std=[.229, .224, .225]):
+    def __init__(self, nclass, backbone, aux, pretrained, dilated=True, norm_layer=None, spm_on=False):
         super(BaseNet, self).__init__()
         self.nclass = nclass
         self.aux = aux
