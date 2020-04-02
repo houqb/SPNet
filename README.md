@@ -13,6 +13,8 @@ The results reported in our paper are originally based on [PyTorch-Encoding](htt
 
 Before training your own models, we recommend you to refer to the usage intruction described [here](https://github.com/hszhao/semseg). Then, you need to update the dataset paths in the configuration files.
 
+Four GPUs with at least 11G memory on each are required for synchronized training.
+
 ### Citation
 
 You may want to cite:
