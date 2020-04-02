@@ -8,6 +8,7 @@ TRAIN:
   arch: spnet
   spm_on: True
   layers: 50
+  dataset: ade20k
   backbone: resnet50
   sync_bn: True  # adopt sync_bn or not
   train_h: 480

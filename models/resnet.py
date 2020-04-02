@@ -105,7 +105,8 @@ class Bottleneck(nn.Module):
         self.dilation = dilation
         self.stride = stride
 
-        if self.spm_on:
+        self.spm = None
+        if spm_on:
             self.spm = SPBlock(planes, planes, norm_layer=norm_layer)
 
     def _sum_each(self, x, y):
@@ -126,7 +127,7 @@ class Bottleneck(nn.Module):
         out = self.bn2(out)
         out = self.relu(out)
 
-        if self.spm_on:
+        if self.spm is not None:
             out = out * self.spm(out)
 
         out = self.conv3(out)
