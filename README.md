@@ -2,7 +2,7 @@
 
 ### Introduction
 
-This repository is a PyTorch implementation for our CVPR2020 paper. Our implementation is based on the [code](https://github.com/hszhao/semseg) provided by Zhao Hengshuang. If you use the code, please cite their [paper] (https://hszhao.github.io/projects/pspnet). Detailed usage can also be found [here](https://github.com/hszhao/semseg).
+This repository is a PyTorch implementation for our CVPR2020 paper. Our implementation is based on the [code](https://github.com/hszhao/semseg) provided by Zhao Hengshuang. If you use the code, please cite their [paper](https://hszhao.github.io/projects/pspnet). Detailed usage can also be found [here](https://github.com/hszhao/semseg).
 
 
 ### Usage
