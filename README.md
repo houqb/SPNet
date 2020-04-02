@@ -1,4 +1,4 @@
-# Strip Pooling: Rethinking Spatial Pooling for Scene Parsing (Coming soon!!!)
+# Strip Pooling: Rethinking Spatial Pooling for Scene Parsing
 
 This repository is a PyTorch implementation for our [CVPR2020 paper](https://arxiv.org/pdf/2003.13328.pdf).
 
@@ -14,6 +14,10 @@ The results reported in our paper are originally based on [PyTorch-Encoding](htt
 Before training your own models, we recommend you to refer to the usage intruction described [here](https://github.com/hszhao/semseg). Then, you need to update the dataset paths in the configuration files.
 
 Four GPUs with at least 11G memory on each are required for synchronized training.
+
+For pretrained models, you can download them from here ([resnet50](https://hangzh.s3.amazonaws.com/encoding/models/resnet50-25c4b509.zip) and [resnet101](https://hangzh.s3.amazonaws.com/encoding/models/resnet101-2a57e44d.zip)).
+
+
 
 ### Citation
 
