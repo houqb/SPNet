@@ -111,7 +111,8 @@ def main_worker(gpu, ngpus_per_node, argss):
         modules_new = [model.head, model.auxlayer]
     else:
         if main_process():
-            logger.info("=> Unknown network architecture: '{}'".format(args.arch))
+            raise RuntimeError("=> Unknown network architecture: {}".format(args.arch))
+
     params_list = []
     for module in modules_ori:
         params_list.append(dict(params=module.parameters(), lr=args.base_lr))
@@ -191,7 +192,7 @@ def main_worker(gpu, ngpus_per_node, argss):
         train_data = dataset.CityscapesData(split='train', data_root=args.data_root, data_list=args.train_list, transform=train_transform)
     else:
         if main_process():
-            logger.info("=> Unsupported dataset: '{}'".format(args.dataset))
+            raise RuntimeError("=> Unsupported dataset: {}".format(args.dataset))
 
     if args.distributed:
         train_sampler = torch.utils.data.distributed.DistributedSampler(train_data)
