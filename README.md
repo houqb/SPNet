@@ -15,8 +15,19 @@ Before training your own models, we recommend you to refer to the usage intructi
 
 Four GPUs with at least 11G memory on each are required for synchronized training.
 
-For pretrained models, you can download them from here ([resnet50](https://hangzh.s3.amazonaws.com/encoding/models/resnet50-25c4b509.zip) and [resnet101](https://hangzh.s3.amazonaws.com/encoding/models/resnet101-2a57e44d.zip)).
+For pretrained models, you can download them from here ([resnet50](https://hangzh.s3.amazonaws.com/encoding/models/resnet50-25c4b509.zip) and [resnet101](https://hangzh.s3.amazonaws.com/encoding/models/resnet101-2a57e44d.zip)). Then, create a new folder "pretrained" and put the pretrained models in it.
 
+For training, just run
+```
+sh tool/train.py dataset_name model_name
+```
+as shown in run.sh.
+
+For test,
+```
+sh tool/test.py dataset_name model_name
+```
+At present, multi-GPU test is not supported. Will implement it later.
 
 
 ### Citation
