@@ -4,6 +4,10 @@
 
 This repository is a PyTorch implementation for our [CVPR2020 paper](https://arxiv.org/pdf/2003.13328.pdf).
 
+### Strip Pooling
+
+![An efficient way to use strip pooling](strip.png)
+
 ### Citation
 
 You may want to cite:
