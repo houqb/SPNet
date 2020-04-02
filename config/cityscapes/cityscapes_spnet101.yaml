@@ -1,7 +1,7 @@
 DATA:
   data_root: /home/e0357894/houqibin/data/Cityscapes/
-  train_list: /home/e0357894/houqibin/data/Cityscapes/list/train.lst
-  val_list: /home/e0357894/houqibin/data/Cityscapes/list/val.lst
+  train_list: ~data/Cityscapes/train.lst
+  val_list: ~/data/Cityscapes/val.lst
   classes: 19
 
 TRAIN:
@@ -15,8 +15,8 @@ TRAIN:
   train_w: 768
   scale_min: 0.5  # minimum random scale
   scale_max: 1.75  # maximum random scale
-  rotate_min: -5  # minimum random rotate
-  rotate_max: 5  # maximum random rotate
+  rotate_min: -1  # minimum random rotate
+  rotate_max: 1  # maximum random rotate
   zoom_factor: 8  # zoom factor for final prediction during training, be in [1, 2, 4, 8]
   ignore_label: 255
   aux_weight: 0.4
@@ -49,7 +49,7 @@ Distributed:
   loss_scale:
 
 TEST:
-  test_list: /home/e0357894/houqibin/data/Cityscapes/list/test.lst
+  test_list: ~/data/Cityscapes/test.lst
   split: test  # split in [train, val and test]
   base_size: 2048  # based size for scaling
   test_h: 768

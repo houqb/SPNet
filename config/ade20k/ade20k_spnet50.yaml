@@ -1,5 +1,5 @@
 DATA:
-  data_root: /Data/ADEChallengeData2016  # data path
+  data_root: /home/e0357894/houqibin/data/ADE20K  # data path
   train_list: ~/data/ADE20K/train.txt
   val_list: ~/data/ADE20K/val.txt
   classes: 150
