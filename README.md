@@ -21,7 +21,10 @@ For training, just run
 ```
 sh tool/train.py dataset_name model_name
 ```
-as shown in run.sh.
+For instance, in our case, you can run
+```
+sh tool/train.py ade20k spnet50
+```
 
 For test,
 ```
