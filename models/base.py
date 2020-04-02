@@ -26,10 +26,6 @@ class BaseNet(nn.Module):
         super(BaseNet, self).__init__()
         self.nclass = nclass
         self.aux = aux
-        self.mean = mean
-        self.std = std
-        self.base_size = base_size
-        self.crop_size = crop_size
         # copying modules from pretrained models
         self.backbone = backbone
         if backbone == 'resnet50':
