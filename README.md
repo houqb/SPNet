@@ -1,4 +1,4 @@
-# Strip Pooling: Rethinking Spatial Pooling for Scene Parsing
+# Strip Pooling: Rethinking Spatial Pooling for Scene Parsing (Coming soon!!!)
 
 ### Introduction
 
