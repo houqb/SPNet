@@ -11,9 +11,9 @@ The results reported in our paper are originally based on [PyTorch-Encoding](htt
 
 ### Usage
 
-Before training your own models, we recommend you to refer to the usage intruction described [here](https://github.com/hszhao/semseg). Then, you need to update the dataset paths in the configuration files.
+Before training your own models, we recommend you to refer to the instructions described [here](https://github.com/hszhao/semseg). Then, you need to update the dataset paths in the configuration files.
 
-Four GPUs with at least 11G memory on each are required for synchronized training. [PyTorch](https://pytorch.org/get-started/locally/) and [Apex](https://github.com/NVIDIA/apex) are required for Sync-BN support. For apex, just follow the "Quick Start" part to install it.
+Four GPUs with at least 11G memory on each are required for synchronized training. [PyTorch](https://pytorch.org/get-started/locally/) (>=1.0.1) and [Apex](https://github.com/NVIDIA/apex) are required for Sync-BN support. For apex, just follow the "Quick Start" part to install it.
 
 For pretrained models, you can download them from here ([resnet50](https://hangzh.s3.amazonaws.com/encoding/models/resnet50-25c4b509.zip) and [resnet101](https://hangzh.s3.amazonaws.com/encoding/models/resnet101-2a57e44d.zip)). Then, create a new folder "pretrained" and put the pretrained models in it.
 
