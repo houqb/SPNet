@@ -2,7 +2,7 @@
 
 This repository is a PyTorch implementation for our [CVPR2020 paper](https://arxiv.org/pdf/2003.13328.pdf) (non-commercial use only).
 
-The results reported in our paper are originally based on [PyTorch-Encoding](https://github.com/zhanghang1989/PyTorch-Encoding) but the environment settings are complicated. To ease use, we reimplement our work based on [semseg](https://github.com/hszhao/semseg).
+The results reported in our paper are originally based on [PyTorch-Encoding](https://github.com/zhanghang1989/PyTorch-Encoding) but the environment settings are a little bit complicated. To ease use, we reimplement our work based on [semseg](https://github.com/hszhao/semseg).
 
 ### Strip Pooling
 
