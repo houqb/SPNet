@@ -15,7 +15,11 @@ Before training your own models, we recommend you to refer to the instructions d
 
 Four GPUs with at least 11G memory on each are required for synchronized training. [PyTorch](https://pytorch.org/get-started/locally/) (>=1.0.1) and [Apex](https://github.com/NVIDIA/apex) are required for Sync-BN support. For apex, just follow the "Quick Start" part to install it.
 
-For pretrained models, you can download them from here ([resnet50](https://hangzh.s3.amazonaws.com/encoding/models/resnet50-25c4b509.zip) and [resnet101](https://hangzh.s3.amazonaws.com/encoding/models/resnet101-2a57e44d.zip)). Then, create a new folder "pretrained" and put the pretrained models in it.
+For pretrained models, you can download them from here ([resnet50](https://hangzh.s3.amazonaws.com/encoding/models/resnet50-25c4b509.zip) and [resnet101](https://hangzh.s3.amazonaws.com/encoding/models/resnet101-2a57e44d.zip)). Then, create a new folder "pretrained" and put the pretrained models in it, like
+```
+mkdir pretrained
+mv downloaded_pretrained_model ./pretrained/
+```
 
 For training, just run
 ```
@@ -31,6 +35,14 @@ For test,
 sh tool/test.py dataset_name model_name
 ```
 At present, multi-GPU test is not supported. Will implement it later.
+
+### Better Results
+
+After CVPR submission, we empirically found that using bilinear interpolation
+in our strip pooling module results in better performance than the original expansion
+operation. This simple modification boost the original performance on ADE20K from
+45.60 as reported in our paper to 46.25, which sets a new state-of-the-art result.
+#### We believe designing more complicated strip pooling module also benefits to the model performance.
 
 ### Contact
 
