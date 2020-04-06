@@ -46,7 +46,8 @@ operation. This simple modification boost the original performance on ADE20K fro
 
 ### Contact
 
-andrewhoux@gmail.com
+If you are interested in this work and want to further investigate the techniques of pooling,
+you are welcome to contact me via andrewhoux@gmail.com.
 
 
 ### Citation
