@@ -117,7 +117,7 @@ def main():
         #                   pretrained=False)
         if args.arch == 'spnet':
             from models.spnet import SPNet
-            model = SPNet(nclass=args.classes, backbone=args.backbone, pretrained=None)
+            model = SPNet(nclass=args.classes, backbone=args.backbone, pretrained=None, spm_on=args.spm_on)
         elif args.arch == 'htnet':
             from models.htnet import HTNet
             model = HTNet(nclass=args.classes, backbone=args.backbone, pretrained=None)
