@@ -36,12 +36,6 @@ sh tool/test.py dataset_name model_name
 ```
 At present, multi-GPU test is not supported. Will implement it later.
 
-### Better Results
-
-After CVPR submission, we empirically found that replace the original expansion operation 
-with bilinear interpolation in our strip pooling module results in better performance. 
-This simple modification boosts the original performance on ADE20K from
-45.60 as reported in our paper to 46.31, which sets a new state-of-the-art result.
 
 #### We believe designing more complicated strip pooling module also benefits to the model performance.
 
