@@ -59,8 +59,8 @@ class SPBlock(nn.Module):
         self.conv2 = nn.Conv2d(inplanes, midplanes, kernel_size=(1, 3), padding=(0, 1), bias=True)
         self.bn2 = norm_layer(midplanes)
         self.conv3 = nn.Conv2d(midplanes, outplanes, kernel_size=1, bias=True)
-        self.pool1 = nn.AdaptiveAvgPool2d((1, None))
-        self.pool2 = nn.AdaptiveAvgPool2d((None, 1))
+        self.pool1 = nn.AdaptiveAvgPool2d((None, 1))
+        self.pool2 = nn.AdaptiveAvgPool2d((1, None))
         self.relu = nn.ReLU(inplace=False)
 
     def forward(self, x):
