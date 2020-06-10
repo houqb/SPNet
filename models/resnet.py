@@ -54,9 +54,9 @@ class SPBlock(nn.Module):
     def __init__(self, inplanes, outplanes, norm_layer=None):
         super(SPBlock, self).__init__()
         midplanes = outplanes
-        self.conv1 = nn.Conv2d(inplanes, midplanes, kernel_size=(3, 1), padding=(1, 0), bias=True)
+        self.conv1 = nn.Conv2d(inplanes, midplanes, kernel_size=(3, 1), padding=(1, 0), bias=False)
         self.bn1 = norm_layer(midplanes)
-        self.conv2 = nn.Conv2d(inplanes, midplanes, kernel_size=(1, 3), padding=(0, 1), bias=True)
+        self.conv2 = nn.Conv2d(inplanes, midplanes, kernel_size=(1, 3), padding=(0, 1), bias=False)
         self.bn2 = norm_layer(midplanes)
         self.conv3 = nn.Conv2d(midplanes, outplanes, kernel_size=1, bias=True)
         self.pool1 = nn.AdaptiveAvgPool2d((None, 1))
